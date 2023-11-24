@@ -4,21 +4,6 @@ Kobee, One Stop Home Theater
 
 Team number: 21
 
-Student names:
-Tan Wen Zheng, Ashley (2201796)
-
-Tan Le Min Sheryl (2201275)
-
-Tan Jing Yuan (2201241)
-
-Chun Jia Jun Louis (2201618)
-
-Dave Bryan Tan Verano (2202784)
-
-Marcus Ong (2203301)
-
-
-
 Team Task Allocation:
 
 Tan Wen Zheng, Ashley: Full Stack Development, Database Design, Bug testing
