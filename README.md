@@ -17,14 +17,23 @@ Dave Bryan Tan Verano (2202784)
 
 Marcus Ong (2203301)
 
+
+
 Team Task Allocation:
 
 Tan Wen Zheng, Ashley: Full Stack Development, Database Design, Bug testing
+
 Tan Le Min Sheryl: Database Design, Report Writing
+
 Tan Jing Yuan: Full Stack Development, Bug testing, Report Writing
+
 Chun Jia Jun Louis: Bug testing, Report Writing
+
 Dave Bryan Tan: ER Diagram, Bug testing
+
 Verano Marcus Ong: ER Diagram, Bug testing
+
+
 
 Code Instructions:
 
