@@ -1,0 +1,46 @@
+.form-group {
+  float: left;
+}
+
+.tabs {
+  display: flex;
+}
+
+.user-box {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.square-box {
+  position: relative;
+  float: left;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+
+.square-box button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.square-box img {
+  width: 100%;
+  height: auto;
+}
+
+.nickname-box {
+  margin-top: 5px;
+  color: #ccc; 
+}
+
+.body-custom-margin {
+  margin-top: 7rem;
+  margin-bottom: 5rem;
+}

@@ -1,0 +1,93 @@
+{% extends "layouts/base-fullscreen.html" %}
+
+{% block title %} Account Management {% endblock %} 
+
+{% block body_class %} settings-basic {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link id="pagestyle" href="/static/assets/css/customForm.css" rel="stylesheet" />
+<style>
+  #movieTable th,
+  #movieTable td {
+    border: none;
+  }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+{% include 'includes/navigation.html' %}
+
+  <div class="page-header align-items-start min-vh-100" style="background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');" loading="lazy">
+    <span class="mask bg-gradient-dark opacity-6"></span>
+    <div class="container my-auto">
+      <div class="row body-custom-margin">
+        <div class="col-lg-11 col-md-8 col-12 mx-auto">
+          <div class="card z-index-0 fadeIn3 fadeInBottom">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
+                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">
+                  <i class="fas fa-play header-icon"></i>&nbsp;
+                  Account Management
+                </h4>
+              </div>
+            </div>
+            <div class="card-body">
+              <table id="movieTable" class="table">
+                <tr>  
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Account Status</th>
+                  <th>Watch Credits</th>
+                  <th></th>
+                </tr>
+                {% for user in userData %} 
+                <tr>
+                  <td>{{ user['Username'] }}</td>
+                  <td>{{ user['Email'] }}</td>
+                  <td>{{ user['AccountStatus'] }}</td>
+                  <td>{{ user['WatchCredits'] }}</td>
+                  <td><a class="btn btn-warning" href="/modifyUser?u={{ user['Username'] }}">
+                    <i class="fas fa-edit"></i> Modify
+                  </a></td>
+                  <td><a class="btn btn-danger" href="?del={{ user['Username'] }}">
+                    <i class="fas fa-trash"></i> Delete
+                  </a></td>
+                  {% if user['AccountStatus'] == 5 %}
+                    <td><a class="btn btn-info" href="/modifyUserPriv?u={{ user['Username'] }}">
+                      <i class="fas fa-edit"></i> Edit Privilege
+                    </a></td>
+                  {% endif %}
+                </tr>
+                {% endfor %}
+              </table>
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                  {% for p in range(currentRow - 2, currentRow + 3) if 1 <= p <= total_pages - 1 %}
+                      <li class="page-item {% if currentRow == p %} active{% endif %}">
+                          <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                      </li>
+                    {% endfor %}
+                </ul>
+              </nav>
+              <div class="text-center mt-3">
+                <td><a class="btn btn-success" href="/addUser">
+                  <i class="fas fa-edit"></i> Add User
+                </a></td>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include 'includes/footer-auth.html' %} 
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+</script>
+{% endblock javascripts %}
+

@@ -1,0 +1,186 @@
+{% extends "layouts/base-fullscreen.html" %}
+
+{% block title %} User Profiles {% endblock %} 
+
+{% block body_class %} settings-basic {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link id="pagestyle" href="/static/assets/css/customForm.css" rel="stylesheet" />
+<link id="pagestyle" href="/static/assets/css/customForm.css" rel="stylesheet" />
+<style>
+    .yellow-star {
+        color: #ffd700;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+{% include 'includes/navigation.html' %}
+
+  <div class="page-header align-items-start min-vh-100" style="background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');" loading="lazy">
+    <span class="mask bg-gradient-dark opacity-6"></span>
+    <div class="container my-auto">
+      <div class="row body-custom-margin">
+        <div class="col-lg-8 col-md-8 col-12 mx-auto">
+          <div class="card z-index-0 fadeIn3 fadeInBottom">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
+                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">
+                  <i class="fas fa-play header-icon"></i>&nbsp;
+                  User Profiles
+                </h4>
+                <div class="row mt-3">
+                  <p class="mb-0 text-white text-center">
+                    {% if msg %}
+                      {{ msg | safe }}
+                    {% else %}
+                      Update your user profile
+                    {% endif %}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="tabs ms-md-5">
+                {% for user in userData %}
+                <div class="user-box me-3">
+                  <div class="square-box">
+                      <button onclick="openTab('{{ user.nickname }}')">
+                        <img src="{{ user.profilePicture }}" alt="{{ user.nickname }} Image">
+                      </button>
+                    </div>
+                    <div class="nickname-box">{{ user.nickname }}</div>
+                  </div>
+                {% endfor %}
+                <div class="user-box me-3">
+                  <div class="square-box">
+                      <button onclick="openTab('newUser')">
+                        <i class="material-icons opacity-6 me-2 text-md" style="vertical-align: middle; color: white;">add</i>
+                      </button>
+                    </div>
+                    <div class="nickname-box">Add User</div>
+                  </div>
+              </div><br><hr><br>
+              {% for user in userData %} 
+                <div id="{{ user.nickname }}" class="tab-content" style="display: none;">
+                  <form role="form" method="post" action="" enctype="multipart/form-data">
+                    {{form.hidden_tag()}}
+                    {{ form.oldNickname(class="form-control", type="hidden", value=user.nickname) }}
+                    <div class="form-group col-md-5 mb-3 ms-md-5">
+                      Profile Picture<br><hr>
+                      Upload a new profile picture<br><br>
+                      {{ form.profileImage(class="form-control", placeholder="Profile Image")}}
+                      <div class="text-center">
+                        <button type="submit" name="uploadImage" 
+                                class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Upload</button>
+                      </div>
+                    </div>
+                  </form>
+                  <form role="form" method="post" action="">
+                    {{form.hidden_tag()}}
+                    {{ form.oldNickname(class="form-control", type="hidden", value=user.nickname) }}
+                    <div class="form-group col-md-5 mb-3 ms-md-5">
+                      User Settings<br><hr>
+                      Nickname<br>
+                      <div class="input-group input-group-outline mb-3">
+                        {{ form.nickname(class="form-control", placeholder="Username", value=user.nickname)}}
+                      </div>
+                      <hr>
+                      Pin<br>
+                      <div class="input-group input-group-outline mb-3">
+                        {{ form.newPin(class="form-control", maxlength="4", type="password", placeholder="Pin")}}
+                      </div>
+                      Pin confirmation<br>
+                      <div class="input-group input-group-outline mb-3">
+                        {{ form.newPinConfirm(class="form-control", maxlength="4", type="password", placeholder="Confirmation Pin")}}
+                      </div>
+                      <div class="text-center">
+                        <button type="submit" name="updateProfile" 
+                                class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Create Profile</button>
+                      </div>
+                    </div>
+                  </form>
+                  {% if profileType == 1 and nick != user.nickname %}
+                    <form role="form" method="post" action="">
+                      {{form.hidden_tag()}}
+                        <div class="text-center">
+                          {{ form.oldNickname(class="form-control", type="hidden", value=user.nickname) }}
+                          <button type="submit" name="deleteProfile" 
+                                  class="btn btn-lg bg-gradient-danger btn-lg w-100 mt-4 mb-0">Delete Profile</button>
+                        </div>
+                    </form>
+                  {% endif %}
+                  {% if reviews %}
+                    {% for review in reviews %}
+                      {% if review['Nickname'] == user.nickname %}
+                        <div class="form-group col-md-5 mb-3 mt-4 ms-5">
+                          <label class="me-2" for="review"><strong>Review - {{ movieInfo[review['movieId']] }}</strong></label>
+                          {% for star_num in range(1, 6) %}
+                            {% if star_num <= review['Rating'] %}
+                              <i class="fas fa-star yellow-star"></i>
+                            {% else %}
+                              <i class="fas fa-star"></i>
+                            {% endif %}
+                          {% endfor %}<br>
+                          <label id="comment" name="comment">{{ review['Comment'] }}</label>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              {% endfor %}
+              {% if not userData|length > 4 %}
+              <div id="newUser" class="tab-content" style="display: none;">
+                <form role="form" method="post" action="">
+                  {{form.hidden_tag()}}
+                  <div class="form-group col-md-5 mb-3 ms-md-5">
+                    New User<br><hr>
+                    Nickname<br>
+                    <div class="input-group input-group-outline mb-3">
+                      {{ form.nickname(class="form-control", placeholder="Username")}}
+                    </div>
+                    <hr>
+                    Pin<br>
+                    <div class="input-group input-group-outline mb-3">
+                      {{ form.newPin(class="form-control", maxlength="4", type="password", placeholder="Pin")}}
+                    </div>
+                    Pin confirmation<br>
+                    <div class="input-group input-group-outline mb-3">
+                      {{ form.newPinConfirm(class="form-control", maxlength="4", type="password", placeholder="Confirmation Pin")}}
+                    </div>
+                    Is Child Account?<br>
+                    <div class="input-group input-group-outline mb-3">
+                      {{ form.accountType(class="form-check-input", type="checkbox")}}
+                    </div>
+                    <div class="text-center">
+                      <button type="submit" name="newProfile" 
+                              class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Update Profile</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include 'includes/footer-auth.html' %} 
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+  function openTab(tabId) {
+      var tabs = document.getElementsByClassName("tab-content");
+      for (var i = 0; i < tabs.length; i++) {
+          tabs[i].style.display = "none";
+      }
+      document.getElementById(tabId).style.display = "block";
+  }
+</script>
+{% endblock javascripts %}
+

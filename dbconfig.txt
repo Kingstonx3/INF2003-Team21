@@ -1,0 +1,5 @@
+DB_HOST=lonez.duckdns.org
+DB_USERNAME=testplsignore
+DB_PASS=youdidnotignore
+DB_NAME=dbproject
+DB_PORT=3380

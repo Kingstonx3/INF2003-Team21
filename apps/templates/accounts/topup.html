@@ -1,0 +1,74 @@
+{% extends "layouts/base-fullscreen.html" %}
+
+{% block title %} Topup Account {% endblock %} 
+
+{% block body_class %} settings-basic {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link id="pagestyle" href="/static/assets/css/customForm.css" rel="stylesheet" />
+{% endblock stylesheets %}
+
+{% block content %}
+{% include 'includes/navigation.html' %}
+
+  <div class="page-header align-items-start min-vh-100" style="background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');" loading="lazy">
+    <span class="mask bg-gradient-dark opacity-6"></span>
+    <div class="container my-auto">
+      <div class="row body-custom-margin">
+        <div class="col-lg-11 col-md-8 col-12 mx-auto">
+          <div class="card z-index-0 fadeIn3 fadeInBottom">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
+                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">
+                    <i class="fas fa-play header-icon"></i>&nbsp;
+                    Account Topup
+                </h4>
+                <div class="row mt-3">
+                    <p class="mb-0 text-white text-center">
+                        {% if msg %}
+                        {{ msg | safe }}
+                        {% else %}
+                        Topup your credits on your account
+                        {% endif %}
+                    </p>
+                </div>
+              </div>
+            </div>
+            <p class="fs-4 mt-4 text-center">Current account credits: {{ credits['WatchCredits'] }}</p>
+            <div class="container mt-3">
+              <form action="/topup" method="POST">
+                <div class="row justify-content-center">
+                  <div class="form-group col-md-1 mb-3 ms-md-2">
+                    <a class="btn btn-success btn-block" onclick="updateValue(90)">90</a>
+                  </div>
+                  <div class="form-group col-md-2 mb-3 ms-md-2">
+                    <a class="btn btn-success btn-block" onclick="updateValue(210)">210 (180 + 30 FREE)</a>
+                  </div>
+                  <div class="form-group col-md-3 mb-3 ms-md-2">
+                    <a class="btn btn-success btn-block" onclick="updateValue(1080)">1080 (900 + 180 FREE)</a>
+                  </div>
+                </div>
+                <div class="text-center mt-3">
+                  <input type="text" id="selectedValue" name="selectedValue" readonly>
+                  <button type="submit" class="btn btn-success ms-2 mb-2">Top Up!</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include 'includes/footer-auth.html' %} 
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+  function updateValue(value) {
+      document.getElementById('selectedValue').value = value;
+  }
+</script>
+{% endblock javascripts %}

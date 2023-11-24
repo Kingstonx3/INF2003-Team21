@@ -1,0 +1,218 @@
+{% extends "layouts/base-fullscreen.html" %}
+
+{% block title %} {{ movieData['Title'] }} {% endblock %}
+
+{% block body_class %} settings-basic {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link id="pagestyle" href="/static/assets/css/customForm.css" rel="stylesheet" />
+<style>
+    .customIframe {
+        width: 100%;
+        max-width: 1100px;
+        height: 600px;
+    }
+    .popularity-info {
+        background-color: #222;
+        color: white;
+        padding: 15px;
+        margin: -50px 0;
+    }
+    .rating {
+        display: flex;
+    }
+    .rating input {
+        display: none;
+    }
+    .rating label {
+        cursor: pointer;
+        font-size: 24px;
+        color: #ccc;
+    }
+    .rating input:checked + label {
+        color: #ffd700;
+    }
+    .customForm {
+        border: 2px solid #fff;
+        padding: 20px;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    .yellow-star {
+        color: #ffd700;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+{% include 'includes/navigation.html' %}
+
+  <div class="page-header align-items-start min-vh-100" style="background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');" loading="lazy">
+    <span class="mask bg-gradient-dark opacity-6"></span>
+    <div class="container my-auto">
+      <div class="row body-custom-margin">
+        <div class="col-lg-11 col-md-8 col-12 mx-auto">
+          <div class="card z-index-0 fadeIn3 fadeInBottom">
+            <div class="card-body">
+              <div class="container mt-5">
+                <div class="popularity-info">
+                  <h2>Popularity Information</h2>
+                  <p>Number of Views: {{ moviePop['NumberOfClicks'] }}</p>
+                  {% if movieReviews %}
+                    <p>Average User Rating: {{
+                      movieReviews | map(attribute='Rating') | sum / (movieReviews | length) 
+                        if movieReviews | length > 0}} / 5
+                    </p>
+                  {% endif %}
+                </div>
+                <div class="mt-6 customIframe" id="player"></div>
+                <div class="text-center mt-3">
+                  <button class="mt-3 btn btn-primary" id="seekButton">Resume from Last Watched</button>
+                </div>
+                <form class="customForm mt-5" action="/submitRating" method="POST">
+                  <input class="form-control" type="hidden" name="movieTitle" value="{{ movieData['Title'] }}">
+                  <div class="form-group col-md-2 mb-3 ms-md-5">
+                    <label for="rating"><strong>Rating</strong></label>
+                    <div class="rating">
+                      <input type="radio" id="star1" name="rating" value="1" checked>
+                      <label for="star1"><i class="fas fa-star"></i></label>
+                      <input type="radio" id="star2" name="rating" value="2">
+                      <label for="star2"><i class="fas fa-star"></i></label>
+                      <input type="radio" id="star3" name="rating" value="3">
+                      <label for="star3"><i class="fas fa-star"></i></label>
+                      <input type="radio" id="star4" name="rating" value="4">
+                      <label for="star4"><i class="fas fa-star"></i></label>
+                      <input type="radio" id="star5" name="rating" value="5">
+                      <label for="star5"><i class="fas fa-star"></i></label>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-5 mb-3 ms-md-5">
+                    <label for="review"><strong>Review</strong></label>
+                    <textarea class="form-control" id="review" name="review" rows="4" required></textarea>
+                  </div>
+                  <div class="text-center mt-5">
+                    <button type="submit" class="btn btn-success">Submit Review!</button>
+                  </div>
+                </form>
+                {% if movieReviews %}
+                  {% for review in movieReviews %}
+                    <div class="form-group col-md-5 mb-3 mt-4 ms-5">
+                      <label class="me-2" for="review"><strong>Review - {{ review['Nickname'] }}</strong></label>
+                      {% for star_num in range(1, 6) %}
+                        {% if star_num <= review['Rating'] %}
+                          <i class="fas fa-star yellow-star"></i>
+                        {% else %}
+                          <i class="fas fa-star"></i>
+                        {% endif %}
+                      {% endfor %}<br>
+                      <label id="comment" name="comment">{{ review['Comment'] }}</label>
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include 'includes/footer-auth.html' %} 
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="https://www.youtube.com/iframe_api" async></script>
+<!-- Your existing HTML code -->
+
+<script>
+    var startTimestamp;
+    var endTimestamp;
+    var videoEnd = 0;
+    var timeWatched;
+    var player;
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            videoId: "{{ movieData['TrailerUrl'] }}",
+            events: {
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data == 0) {
+            videoEnd = 1;
+            endTimestamp = player.getCurrentTime();
+            timeWatched = player.getCurrentTime();
+        }
+    }
+
+    var tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function getTimestamp() {
+        startTimestamp = player.getCurrentTime();
+    }
+
+    function sendVideoData() {
+        endTimestamp = player.getCurrentTime();
+
+        if (videoEnd != 1) {
+            if (endTimestamp > startTimestamp) {
+                timeWatched = endTimestamp - startTimestamp;
+            } else {
+                timeWatched = startTimestamp;
+            }
+        }
+
+        // Store data
+        const formData = new FormData();
+        formData.append('timeWatched', timeWatched);
+        formData.append('movieId', "{{ movieData['MovieId'] }}");
+        formData.append('videoEnd', videoEnd);
+        formData.append('startTimestamp', startTimestamp);
+        formData.append('endTimestamp', endTimestamp);
+
+        navigator.sendBeacon('/videoApi', formData);
+    }
+
+    document.onvisibilitychange = function() {
+        if (document.visibilityState === 'hidden') {
+            sendVideoData();
+        }
+    };
+
+    document.getElementById('seekButton').addEventListener('click', function() {
+        player.seekTo("{{ lastWatched['Timestamp'] }}", true);
+    });
+
+    const stars = document.querySelectorAll('.rating input');
+
+    stars.forEach((star, index) => {
+        star.addEventListener('change', () => {
+            resetStars();
+            highlightStars(index);
+        });
+    });
+
+    function resetStars() {
+        stars.forEach((star) => {
+            star.nextElementSibling.style.color = '#ccc';
+        });
+    }
+
+    function highlightStars(selectedIndex) {
+        for (let i = 0; i <= selectedIndex; i++) {
+            stars[i].nextElementSibling.style.color = '#ffd700';
+        }
+    }
+
+    // Fires function after 7000ms (7s)
+    setTimeout(getTimestamp, 7000);
+</script>
+{% endblock javascripts %}

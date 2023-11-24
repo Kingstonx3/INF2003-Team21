@@ -1,0 +1,96 @@
+{% extends "layouts/base-fullscreen.html" %}
+
+{% block title %} Modify Movie {% endblock %} 
+
+{% block body_class %} settings-basic {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link id="pagestyle" href="/static/assets/css/customForm.css" rel="stylesheet" />
+{% endblock stylesheets %}
+
+{% block content %}
+{% include 'includes/navigation.html' %}
+
+  <div class="page-header align-items-start min-vh-100" style="background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');" loading="lazy">
+    <span class="mask bg-gradient-dark opacity-6"></span>
+    <div class="container my-auto">
+      <div class="row body-custom-margin">
+        <div class="col-lg-11 col-md-8 col-12 mx-auto">
+          <div class="card z-index-0 fadeIn3 fadeInBottom">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
+                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">
+                    <i class="fas fa-play header-icon"></i>&nbsp;
+                  Modify Movie
+                </h4>
+                <div class="row mt-3">
+                    <p class="mb-0 text-white text-center">
+                        {% if msg %}
+                        {{ msg | safe }}
+                        {% else %}
+                        Update Movie information
+                        {% endif %}
+                    </p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+            <div class="container mt-5">
+              <form action="/modify_movie?v={{ movieData['Title'] }}" method="POST">
+                <div class="form-group col-md-5 mb-3 ms-md-5">
+                  <label for="title"><strong>Title</strong><span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="title" name="title" value="{{ movieData['Title'] }}" required>
+                </div>
+                <div class="form-group col-md-5 mb-3 ms-md-5">
+                  <label for="genre"><strong>Genre</strong><span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="genre" name="genre" value="{{ movieData['Genre'] }}" required>
+                </div>
+                <div class="form-group col-md-5 mb-3 ms-md-5">
+                  <label for="release_date"><strong>Release Date (Year)</strong><span class="text-danger">*</span></label>
+                  <input type="text" class="form-control", maxlength="4" id="release_date" name="release_date" value="{{ movieData['Year'] }}" required>
+                </div>
+                <div class="form-group col-md-5 mb-3 ms-md-5">
+                  <label for="director"><strong>Director</strong><span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="director" name="director" value="{{ movieData['Director'] }}" required>
+                </div>
+                <div class="form-group col-md-5 mb-3 ms-md-5">
+                  <label for="actors"><strong>Actors</strong><span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="actors" name="actors" value="{{ movieData['Actors'] }}" required>
+                </div>
+                <div class="form-group col-md-5 mb-3 ms-md-5">
+                  <label for="metascore"><strong>Metascore</strong><span class="text-danger">*</span></label>
+                  <input type="number" class="form-control" id="metascore" name="metascore" value="{{ movieData['Metascore'] }}" required>
+                </div>
+                <div class="form-group col-md-5 mb-3 ms-md-5">
+                  <label for="runtime"><strong>Runtime (Minutes)</strong><span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" maxlength="3" id="runtime" name="runtime" value="{{ movieData['Runtime (Minutes)'] }}" required>
+                </div>
+                <div class="form-group col-md-5 mb-3 ms-md-5">
+                  <label for="trailer_url"><strong>Trailer URL</strong><span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="trailer_url" name="trailer_url" value="{{ movieData['TrailerUrl'] }}" required>
+                </div>
+                <div class="form-group col-md-5 mb-3 ms-md-5">
+                  <label for="plot_summary"><strong>Plot Summary</strong><span class="text-danger">*</span></label>
+                  <textarea class="form-control" id="plot_summary" name="plot_summary" rows="4" required>{{ movieData['Description'] }}</textarea>
+                </div>
+                <div class="text-center mt-3">
+                  <a href="/adminMovie" class="btn btn-danger ml-2">Cancel</a>
+                  <button type="submit" class="btn btn-success">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include 'includes/footer-auth.html' %} 
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+</script>
+{% endblock javascripts %}

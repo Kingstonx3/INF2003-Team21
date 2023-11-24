@@ -1,0 +1,89 @@
+  <!-- Navbar -->
+  <div class="container position-sticky z-index-sticky">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-dark navbar-expand-lg  blur border-radius-xl mt-4 top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+          <div class="container-fluid px-0">
+            <a class="navbar-brand font-weight-bolder ms-sm-3" href="/" rel="tooltip" title="Kobee" data-placement="bottom">
+              Kobee
+            </a>
+            <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon mt-2">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+              </span>
+            </button>
+            <div class="collapse navbar-collapse pt-3 pb-2 py-lg-0 w-100" id="navigation">
+              <ul class="navbar-nav navbar-nav-hover ms-auto">
+                <li class="nav-item dropdown dropdown-hover mx-2">
+                  <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="material-icons opacity-6 me-2 text-md">menu</i>
+                    Profile
+                    <img src="/static/assets/img/down-arrow-dark.svg" alt="down-arrow" class="arrow ms-auto ms-md-2">
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3" aria-labelledby="dropdownMenuPages">
+                    <div class="d-none d-lg-block">
+                      {% if profileType == 1 %}
+                        <a href="/topup" class="dropdown-item border-radius-md">
+                          <i class="material-icons opacity-6 me-2 text-md" style="vertical-align: middle;">bolt</i>
+                          <span>Top Up</span>
+                        </a>
+                      {% endif %}
+                      <a href="/profile" class="dropdown-item border-radius-md">
+                        <i class="material-icons opacity-6 me-2 text-md" style="vertical-align: middle;">groups</i>
+                        <span>Change Profile</span>
+                      </a>
+                      <a href="/editProfile" class="dropdown-item border-radius-md">
+                        <i class="material-icons opacity-6 me-2 text-md" style="vertical-align: middle;">groups</i>
+                        <span>Edit Profile</span>
+                      </a>
+                      <a href="/settings" class="dropdown-item border-radius-md">
+                        <i class="material-icons opacity-6 me-2 text-md" style="vertical-align: middle;">settings</i>
+                        <span>Settings</span>
+                      </a>
+                    </div>
+                  </div>
+                </li>
+                {% if accountType == 5 %}
+                  <li class="nav-item dropdown dropdown-hover mx-2">
+                    <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="material-icons opacity-6 me-2 text-md">menu</i>
+                      Admin
+                      <img src="/static/assets/img/down-arrow-dark.svg" alt="down-arrow" class="arrow ms-auto ms-md-2">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3" aria-labelledby="dropdownMenuPages">
+                      <div class="d-none d-lg-block">
+                        {% if accPriv['moviePerm'] %}
+                          <a href="/adminMovie" class="dropdown-item border-radius-md">
+                            <i class="material-icons opacity-6 me-2 text-md" style="vertical-align: middle;">view_kanban</i>
+                            <span>Video Stats</span>
+                          </a>
+                        {% endif %}
+                        {% if accPriv['accPerm'] %}
+                          <a href="/adminAccount" class="dropdown-item border-radius-md">
+                            <i class="material-icons opacity-6 me-2 text-md" style="vertical-align: middle;">groups</i>
+                            <span>Accounts Management</span>
+                          </a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </li>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                  <li class="nav-item ms-lg-auto">
+                    <a class="nav-link nav-link-icon me-2" 
+                      href="{{ url_for('authentication_blueprint.logout') }}">
+                      <i class="fa fa-sign-out me-1"></i>
+                      <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sign out">Logout</p>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <!-- End Navbar -->
+      </div>
+    </div>
+  </div>
