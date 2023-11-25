@@ -807,7 +807,8 @@ def modifyUser():
             return render_template('admin/modify_user.html',
                                 userData=userData,
                                 accountType=current_user.accountStatus,
-                                profileType=profileType)
+                                profileType=profileType,
+                                accPriv=accPriv)
 
     return render_template('home/page-500.html'), 500
 
