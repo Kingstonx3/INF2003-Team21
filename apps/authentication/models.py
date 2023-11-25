@@ -250,10 +250,6 @@ def update_account(username, email, password, oldUsername, form=None):
                         errMsg = 'username'
                     else:
                         username = None
-                else:
-                    query = "UPDATE UserAccount SET Username = %s WHERE Username = %s"
-                    cursor.execute(query, (username, email,))
-                    mysql.db.commit()
 
             # Check if email exist if there is input
             if email:
@@ -274,19 +270,10 @@ def update_account(username, email, password, oldUsername, form=None):
                 cursor.close()
                 return errMsg
 
-            # Update username
-            if username:
-                if not form:
-                    query = "UPDATE UserAccount SET Username = %s WHERE Username = %s"
-                    cursor.execute(query, (username, oldUsername,))
-                elif username != oldUsername:
-                    query = "UPDATE UserAccount SET Username = %s WHERE Username = %s"
-                    cursor.execute(query, (username, oldUsername,))
-
             # Update email
             if email:
                 query = "UPDATE UserAccount SET email = %s WHERE Username = %s"
-                cursor.execute(query, (username, oldUsername,))
+                cursor.execute(query, (email, oldUsername,))
 
             # Update password
             if password:
@@ -301,6 +288,11 @@ def update_account(username, email, password, oldUsername, form=None):
                 if form['accCredits']:
                     query = "UPDATE UserAccount SET WatchCredits = %s WHERE Username = %s"
                     cursor.execute(query, (int(form['accCredits']), oldUsername,))
+
+            # Update username LAST
+            if username and username != oldUsername:
+                query = "UPDATE UserAccount SET Username = %s WHERE Username = %s"
+                cursor.execute(query, (username, oldUsername,))
 
             mysql.db.commit()
             return 'success'

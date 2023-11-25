@@ -781,7 +781,7 @@ def modifyUser():
                                             msg=errMsg,
                                             accPriv=accPriv)
                 else:
-                    userData = get_user_by_username(accountName, 'admin')
+                    userData = get_user_by_username(request.form['username'], 'admin')
                     if userData:
                         msg = "User successfully updated."
                         return render_template('admin/modify_user.html',
@@ -790,16 +790,16 @@ def modifyUser():
                                             profileType=profileType,
                                             msg=msg,
                                             accPriv=accPriv)
-        else:
-            msg = "Failed to update user."
-            userData = get_user_by_username(accountName, 'admin')
-            if userData:
-                return render_template('admin/modify_user.html',
-                                    userData=userData,
-                                    accountType=current_user.accountStatus,
-                                    profileType=profileType,
-                                    msg=msg,
-                                    accPriv=accPriv)
+
+        msg = "Failed to update user."
+        userData = get_user_by_username(accountName, 'admin')
+        if userData:
+            return render_template('admin/modify_user.html',
+                                userData=userData,
+                                accountType=current_user.accountStatus,
+                                profileType=profileType,
+                                msg=msg,
+                                accPriv=accPriv)
         
     elif request.method == 'GET':
         userData = get_user_by_username(accountName, 'admin')
@@ -810,6 +810,7 @@ def modifyUser():
                                 profileType=profileType,
                                 accPriv=accPriv)
 
+    print("Request: ", request.method)
     return render_template('home/page-500.html'), 500
 
 # Modify Privilege
