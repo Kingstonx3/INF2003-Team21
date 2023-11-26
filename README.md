@@ -6,17 +6,17 @@ Team number: 21
 
 Team Task Allocation:
 
-Tan Wen Zheng, Ashley: Full Stack Development, Database Design, Bug testing
+Tan Wen Zheng, Ashley: Full Stack Development, Database Design, Bug testing, Report Writing
 
-Tan Le Min Sheryl: Database Design, Report Writing
+Tan Le Min Sheryl: Database Design, Report Writing, Bug testing
 
-Tan Jing Yuan: Full Stack Development, Bug testing, Report Writing
+Tan Jing Yuan: Full Stack Development, Bug testing, Report Writing, Presentation Slides
 
-Chun Jia Jun Louis: Bug testing, Report Writing
+Chun Jia Jun Louis: Bug testing, Report Writing, Presentation Slides
 
-Dave Bryan Tan: ER Diagram, Bug testing
+Dave Bryan Tan: Bug testing, ER Diagram
 
-Verano Marcus Ong: ER Diagram, Bug testing
+Marcus Ong: Bug testing, ER Diagram
 
 
 
